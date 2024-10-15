@@ -3,8 +3,6 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import axios from 'axios';
 
-
-
 const firebaseConfig = {
     apiKey: "AIzaSyD4LspJzDdQm4PykruDE3viv0cB_tKEOB8",
     authDomain: "dbmsproject-302af.firebaseapp.com",
