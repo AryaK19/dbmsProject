@@ -1,16 +1,15 @@
 
 import { Outlet } from 'react-router-dom';
-import Navbar from '../pages/Navbar';
-import { useAuth } from '../Auth/AuthContext';
 
-export default function HomeLayout() {
 
-    const { isAuthenticated } = useAuth();
+export default function AdminLayout() {
+
+    
 
     return (
         <div className="p-4 bg-black min-h-screen text-white">
 
-            {isAuthenticated && <Navbar />}
+            {/* {isAuthenticated && <Navbar />} */}
 
             <main>
                 <Outlet />

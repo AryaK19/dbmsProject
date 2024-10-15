@@ -1,5 +1,5 @@
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 const Context = createContext();
 
 export const useAuth = () => useContext(Context);
@@ -15,8 +15,13 @@ export default function AuthContext({ children }) {
     useEffect(() => {
         const auth = getAuth();
         const unsubscribe = onAuthStateChanged(auth, (user) => {
+            
             if (user) {
-                setUser(user);
+                const newUser = {
+                    ...user,
+                    role: "admin" //change overall logic to get this user from backend
+                }
+                setUser(newUser);
                 setLogin();
             } else {
                 setUser(null);
@@ -43,7 +48,9 @@ export default function AuthContext({ children }) {
         isAuthenticated,
         loading,
         setLogin,
-        setLogout
+        setLogout, 
+        user, 
+        setUser
     };
 
     return (

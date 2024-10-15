@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Navbar from './Navbar';
+
 
 const hackathons = [
   { id: 1, name: 'Hackathon 1', description: 'Description for Hackathon 1', imageUrl: 'https://via.placeholder.com/150' },

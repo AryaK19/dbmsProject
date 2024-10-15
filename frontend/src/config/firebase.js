@@ -30,6 +30,8 @@ try {
     profile_image: user.photoURL,
     });
 
+    console.log("firebase res: ", response);
+
     // Store user email in local storage
     localStorage.setItem('userEmail', user.email);
 

@@ -1,8 +1,6 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import Loading from "../extra/Loading";
-import Home from "../pages/Home";
-
 
 export const ProtectedRoutes = ({ element }) => {
 
@@ -18,7 +16,7 @@ export const ProtectedRoutes = ({ element }) => {
 }
 export const ProtectedRoot = () => {
 
-    const {isAuthenticated, loading} = useAuth();
+    const {isAuthenticated, loading, user} = useAuth();
 
     if(loading)
         return <Loading />
@@ -26,5 +24,8 @@ export const ProtectedRoot = () => {
     if (!isAuthenticated)
         return <Navigate to="/login" />;
 
-    return <Home />;
+    if(user.role === "admin")
+        return <Navigate to="/admin" />;
+
+    return <Navigate to="/student" />;
 }

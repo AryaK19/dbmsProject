@@ -1,4 +1,8 @@
 const Profile = () => {
+
+    // write code to fetch profile from user id::
+    
+    
   const user = {
     name: 'John Doe',
     email: 'johndoe@example.com',
