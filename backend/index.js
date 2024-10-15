@@ -93,6 +93,7 @@ app.post('/login', (req, res) => {
 // Hackathon Routes
 app.post('/hackathons', (req, res) => {
   const { name, description, image_url, organization, participants, date, time, contact_email, contact_phone } = req.body;
+
   const query = 'INSERT INTO hackathons (name, description, image_url, organization, participants, date, time, contact_email, contact_phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
   db.query(query, [name, description, image_url, organization, participants, date, time, contact_email, contact_phone], (err, result) => {
     if (err) {
@@ -115,6 +116,62 @@ app.get('/hackathons', (req, res) => {
     res.status(200).json(results);
   });
 });
+
+// Get hackathon by ID
+app.get('/hackathons/:id', (req, res) => {
+  const hackathonId = req.params.id;
+  const query = 'SELECT * FROM hackathons WHERE id = ?'; // Assuming 'id' is the column name in the database
+
+  db.query(query, [hackathonId], (err, results) => {
+    if (err) {
+      console.error('Error fetching hackathon:', err);
+      res.status(500).send('Error fetching hackathon');
+      return;
+    }
+
+    if (results.length > 0) {
+      res.status(200).json(results[0]); // Return the specific hackathon
+    } else {
+      res.status(404).send('Hackathon not found');
+    }
+  });
+});
+
+// Delete hackathon by ID
+app.delete('/hackathons/:id', (req, res) => {
+  const { id } = req.params;
+  const query = 'DELETE FROM hackathons WHERE id = ?';
+  
+  db.query(query, [id], (err, result) => {
+    if (err) {
+      console.error('Error deleting hackathon:', err);
+      return res.status(500).send('Error deleting hackathon');
+    }
+    res.status(204).send(); // No content
+  });
+});
+
+// Update hackathon by ID
+app.put('/hackathons/:id', (req, res) => {
+  const { id } = req.params;
+  const { name, description, image_url, organization, participants, date, time, contact_email, contact_phone } = req.body;
+
+  const query = `
+    UPDATE hackathons 
+    SET name = ?, description = ?, image_url = ?, organization = ?, participants = ?, date = ?, time = ?, contact_email = ?, contact_phone = ? 
+    WHERE id = ?
+  `;
+
+  db.query(query, [name, description, image_url, organization, participants, date, time, contact_email, contact_phone, id], (err, result) => {
+    if (err) {
+      console.error('Error updating hackathon:', err);
+      return res.status(500).send('Error updating hackathon');
+    }
+    res.status(200).send('Hackathon updated');
+  });
+});
+
+
 // Start server
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
