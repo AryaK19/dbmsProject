@@ -1,8 +1,8 @@
-// models/User.js
+// models/Admin.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
-const User = sequelize.define('User', {
+const Admin = sequelize.define('Admin', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -21,13 +21,6 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: true,
   },
-  profile_image: {
-    type: DataTypes.STRING,
-  },
-  DOB: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-  },
 });
 
-module.exports = User;
+module.exports = Admin;
