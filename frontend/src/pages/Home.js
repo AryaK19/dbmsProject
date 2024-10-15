@@ -10,8 +10,7 @@ const hackathons = [
 
 const Home = () => {
   return (
-    <div className="p-4 bg-black min-h-screen">
-      <Navbar />
+
       <main className="bg-gray-900 p-6 rounded-lg shadow-lg mt-24">
         <h2 className="text-2xl font-semibold mb-4" style={{ color: '#3cd7b8' }}>Available Hackathons</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -27,7 +26,7 @@ const Home = () => {
           ))}
         </div>
       </main>
-    </div>
+
   );
 };
 

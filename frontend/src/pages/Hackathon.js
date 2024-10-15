@@ -13,8 +13,7 @@ const Hackathon = () => {
   const hackathon = hackathons.find(h => h.id === parseInt(id));
 
   return (
-    <div className="p-4 bg-black min-h-screen text-white">
-      <Navbar />
+    
       <div className="container mx-auto flex flex-col md:flex-row gap-4 mt-24">
         {/* Left Container */}
         <div className="md:w-2/3 bg-gray-900 p-6 rounded-lg shadow-lg">
@@ -55,7 +54,7 @@ const Hackathon = () => {
           </ul>
         </div>
       </div>
-    </div>
+
   );
 };
 
