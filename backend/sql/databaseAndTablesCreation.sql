@@ -17,12 +17,27 @@ CREATE TABLE user_dob(
     
 );
 
+CREATE TABLE admin(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(255) NOT NULL,
+	email VARCHAR(255) UNIQUE NOT NULL,
+	password VARCHAR(255) NULL
+);
+
+CREATE TABLE organisations(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+	contact_email VARCHAR(255),
+	contact_phone VARCHAR(255)
+);
+
+
 CREATE TABLE hackathons (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
   description TEXT,
   image_url VARCHAR(255),
-  organisation_id VARCHAR(255),
+  organisation_id INT,
   participants INT,
   date DATE,
   admin_id INT,
@@ -41,19 +56,6 @@ CREATE TABLE registrations (
   FOREIGN KEY (hackathon_id) REFERENCES hackathons(id)
 );
 
-CREATE TABLE organisations(
-	id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-	contact_email VARCHAR(255),
-	contact_phone VARCHAR(255)
-);
-
-CREATE TABLE admin(
-	id INT AUTO_INCREMENT PRIMARY KEY,
-	name VARCHAR(255) NOT NULL,
-	email VARCHAR(255) UNIQUE NOT NULL,
-	password VARCHAR(255) NULL
-);
 
 CREATE TABLE gallery (
 	id INT AUTO_INCREMENT PRIMARY KEY,
@@ -77,3 +79,5 @@ CREATE TABLE comments_reply (
 	reply TEXT NOT NULL,
 	FOREIGN KEY (comment_id) REFERENCES comments(id)
 );
+
+
