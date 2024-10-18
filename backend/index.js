@@ -27,6 +27,8 @@ db.connect(err => {
 });
 
 // Routes
+app.use('/comments', require('./routes/comments'));
+
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
@@ -115,6 +117,7 @@ app.get('/hackathons', (req, res) => {
     res.status(200).json(results);
   });
 });
+
 // Start server
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
