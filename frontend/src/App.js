@@ -28,7 +28,7 @@ const App = () => {
       <Route path="/" element={<RootLayout />} errorElement={<NotFound />}>
         <Route index element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} /> {/* Add the Register route */}
+        <Route path="/register" element={<Register />} />
 
         <Route path="student" element={<ProtectedRoutes element={<StudentLayout />} />}>
           <Route index element={<ProtectedRoutes element={<Home />} />} />

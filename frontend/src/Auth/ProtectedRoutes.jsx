@@ -13,13 +13,15 @@ export const ProtectedRoutes = ({ element }) => {
 };
 
 export const ProtectedRoot = () => {
-  const { isAuthenticated, loading, user, isAdmin } = useAuth();
+  const { isAuthenticated, loading, isAdmin } = useAuth();
+
+  console.log("isAuthenticated", isAuthenticated);
 
   if (loading) return <Loading />;
 
   if (!isAuthenticated) return <Navigate to="/login" />;
 
-  if (isAdmin) return <Navigate to="admin" />;
+  if (isAdmin) return <Navigate to="/admin" />;
 
-  return <Navigate to="student" />;
+  return <Navigate to="/student" />;
 };

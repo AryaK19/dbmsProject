@@ -10,10 +10,14 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3001/login', { email, password });
+      const response = await axios.post('http://localhost:3001/login', { email, password }, { withCredentials: true });
       if (response.status === 200) {
-       
-        navigate('/dashboard'); 
+        console.log('Logged in');
+        if (response.data.isAdmin) {
+          navigate('/admin'); 
+        } else {
+          navigate('/student');
+        }
       }
     } catch (error) {
       console.error('Error logging in:', error);

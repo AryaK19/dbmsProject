@@ -14,11 +14,16 @@ export default function AuthContext({ children }) {
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
+        console.log('Checking auth status...');
         const response = await axios.get('http://localhost:3001/auth/status', { withCredentials: true });
         if (response.status === 200) {
           setUser(response.data.user);
           setIsAdmin(response.data.isAdmin);
-          setLogin();
+          if (response.data.user) {
+            setLogin();
+          } else {
+            setLogout();
+          }
         } else {
           setLogout();
         }

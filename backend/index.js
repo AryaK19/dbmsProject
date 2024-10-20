@@ -95,24 +95,50 @@ app.get('/users', (req, res) => {
 
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
-  const query = 'SELECT * FROM users WHERE email = ?';
-  db.query(query, [email], async (err, results) => {
+  const adminQuery = 'SELECT * FROM admins WHERE email = ?';
+  const userQuery = 'SELECT * FROM users WHERE email = ?';
+
+  // First, check if the user is an admin
+  db.query(adminQuery, [email], async (err, adminResults) => {
     if (err) {
-      console.error('Error fetching user:', err);
-      res.status(500).send('Error fetching user');
+      console.error('Error fetching admin:', err);
+      res.status(500).send('Error fetching admin');
       return;
     }
-    if (results.length > 0) {
-      const user = results[0];
-      const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (adminResults.length > 0) {
+      const admin = adminResults[0];
+      const isPasswordValid = await bcrypt.compare(password, admin.password);
       if (isPasswordValid) {
-        req.session.user = user; // Save user in session
-        res.status(200).json(user);
+        req.session.user = admin; // Save admin in session
+        req.session.isAdmin = true; // Mark as admin
+        res.status(200).json({ user: admin, isAdmin: true });
       } else {
         res.status(401).send('Invalid credentials');
       }
     } else {
-      res.status(404).send('User not found');
+      // If not an admin, check if the user is a regular user
+      db.query(userQuery, [email], async (err, userResults) => {
+        if (err) {
+          console.error('Error fetching user:', err);
+          res.status(500).send('Error fetching user');
+          return;
+        }
+
+        if (userResults.length > 0) {
+          const user = userResults[0];
+          const isPasswordValid = await bcrypt.compare(password, user.password);
+          if (isPasswordValid) {
+            req.session.user = user; // Save user in session
+            req.session.isAdmin = false; // Mark as non-admin
+            res.status(200).json({ user, isAdmin: false });
+          } else {
+            res.status(401).send('Invalid credentials');
+          }
+        } else {
+          res.status(404).send('User not found');
+        }
+      });
     }
   });
 });
@@ -120,19 +146,14 @@ app.post('/login', (req, res) => {
 app.get('/auth/status', async (req, res) => {
   if (req.session.user) {
     const user = req.session.user;
-    const isAdminQuery = 'SELECT * FROM admins WHERE email = ?';
-    db.query(isAdminQuery, [user.email], (err, results) => {
-      if (err) {
-        console.error('Error checking admin status:', err);
-        return res.status(500).send('Error checking admin status');
-      }
-      const isAdmin = results.length > 0;
-      res.status(200).json({ user, isAdmin });
-    });
+    const isAdmin = req.session.isAdmin || false;
+    res.status(200).json({ user, isAdmin });
   } else {
-    res.status(401).send('Not authenticated');
+    res.status(200).json({ user: null, isAdmin: false });
   }
 });
+
+
 
 // Hackathon Routes
 app.post('/hackathons', (req, res) => {
