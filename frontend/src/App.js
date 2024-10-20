@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Home from './pages/Home';
 import Hackathon from './pages/Hackathon';
 import Login from './pages/Login';
+import Profile from './pages/Profile';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const App = () => {
@@ -32,6 +33,10 @@ const App = () => {
         <Route
           path="/hackathon/:id"
           element={user ? <Hackathon /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/profile"
+          element={user ? <Profile /> : <Navigate to="/login" />}
         />
       </Routes>
     </Router>

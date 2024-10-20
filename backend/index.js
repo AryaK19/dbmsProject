@@ -3,6 +3,8 @@ const mysql = require('mysql2');
 const cors = require('cors');
 const app = express();
 const port = 3001;
+const userRoutes = require('./routes/users');
+const commentRoutes = require('./routes/comments');
 
 // Middleware
 app.use(express.json());
@@ -27,7 +29,8 @@ db.connect(err => {
 });
 
 // Routes
-app.use('/comments', require('./routes/comments'));
+app.use('/users', userRoutes);
+app.use('/comments', commentRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
