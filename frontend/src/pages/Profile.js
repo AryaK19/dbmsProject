@@ -52,7 +52,7 @@ const Profile = () => {
       <main className="bg-gray-900 p-6 rounded-lg shadow-lg mt-24">
         <h2 className="text-2xl font-semibold mb-4" style={{ color: '#3cd7b8' }}>Profile</h2>
         {user && (
-          <div>
+          <div className="text-white">
             {editMode ? (
               <form onSubmit={handleFormSubmit}>
                 <div>
@@ -62,6 +62,7 @@ const Profile = () => {
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
+                    className="text-black"
                   />
                 </div>
                 <div>
@@ -71,17 +72,19 @@ const Profile = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
+                    className="text-black"
                   />
                 </div>
-                <div>
+                {/* <div>
                   <label>Profile Image URL:</label>
                   <input
                     type="text"
                     name="profile_image"
                     value={formData.profile_image}
                     onChange={handleInputChange}
+                    className="text-black"
                   />
-                </div>
+                </div> */}
                 <div>
                   <label>Date of Birth:</label>
                   <input
@@ -89,18 +92,19 @@ const Profile = () => {
                     name="DOB"
                     value={formData.DOB}
                     onChange={handleInputChange}
+                    className="text-black"
                   />
                 </div>
-                <button type="submit">Save</button>
-                <button type="button" onClick={() => setEditMode(false)}>Cancel</button>
+                <button type="submit" className="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600">Save</button>
+                <button type="button" onClick={() => setEditMode(false)} className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2">Cancel</button>
               </form>
             ) : (
               <div>
                 <p>Name: {user.name}</p>
                 <p>Email: {user.email}</p>
-                <img src={user.profile_image} alt="Profile" />
+                {/* <img src={user.profile_image} alt="Profile" className="w-32 h-32 rounded-full" /> */}
                 <p>Date of Birth: {user.DOB}</p>
-                <button onClick={() => setEditMode(true)}>Edit Profile</button>
+                <button onClick={() => setEditMode(true)} className="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600">Edit Profile</button>
               </div>
             )}
           </div>
