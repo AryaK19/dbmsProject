@@ -3,29 +3,23 @@ import { useAuth } from "./AuthContext";
 import Loading from "../extra/Loading";
 
 export const ProtectedRoutes = ({ element }) => {
+  const { isAuthenticated, loading } = useAuth();
 
-    const {isAuthenticated, loading} = useAuth();
+  if (loading) return <Loading />;
 
-    if(loading)
-        return <Loading />
+  if (!isAuthenticated) return <Navigate to="/login" />;
 
-    if (!isAuthenticated)
-        return <Navigate to="/login" />;
+  return element;
+};
 
-    return element;
-}
 export const ProtectedRoot = () => {
+  const { isAuthenticated, loading, user, isAdmin } = useAuth();
 
-    const {isAuthenticated, loading, user} = useAuth();
+  if (loading) return <Loading />;
 
-    if(loading)
-        return <Loading />
+  if (!isAuthenticated) return <Navigate to="/login" />;
 
-    if (!isAuthenticated)
-        return <Navigate to="/login" />;
+  if (isAdmin) return <Navigate to="admin" />;
 
-    if(user.role === "admin")
-        return <Navigate to="/admin" />;
-
-    return <Navigate to="/student" />;
-}
+  return <Navigate to="student" />;
+};

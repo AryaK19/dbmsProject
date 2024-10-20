@@ -18,12 +18,12 @@ const AdminHome = () => {
       }
     };
 
-    getHackathons(); // Trigger the API call on component mount
+    getHackathons();
   }, []);
 
-  // Function to handle click on a hackathon and navigate to its detail page
+
   const handleNavigate = (id) => {
-    navigate(`/admin/hackathon/${id}`); // Navigate to the dynamic route for the specific hackathon
+    navigate(`/admin/hackathon/${id}`); 
   };
 
   const createNewHackathon = () => {

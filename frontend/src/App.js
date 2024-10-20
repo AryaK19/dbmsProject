@@ -4,11 +4,13 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
   RouterProvider,
+  Navigate,
 } from "react-router-dom";
 import Hackathon from "./pages/Hackathon";
 import Login from "./pages/Login";
-
-import NotFound from "./extra/NotFound";
+import Register from "./pages/Register"; // Import the Register component
+import NotFound from "./extra/NotFound"; // Import the updated NotFound component
+// import ErrorBoundary from "./extra/ErrorBoundary"; // Import the ErrorBoundary component
 import { ProtectedRoot, ProtectedRoutes } from "./Auth/ProtectedRoutes";
 import AuthContext from "./Auth/AuthContext";
 import RootLayout from "./Layout/RootLayout";
@@ -20,20 +22,18 @@ import AdminHackathon from "./Admin/AdminHackathon";
 import Profile from "./pages/Profile";
 import CreateEditHackathon from "./Admin/CreateEditHackathon";
 
-
 const App = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route path="/" element={<RootLayout />}>
-        {/* add protected route */}
-        <Route index element={<ProtectedRoot />} />
+      <Route path="/" element={<RootLayout />} errorElement={<NotFound />}>
+        <Route index element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} /> {/* Add the Register route */}
 
         <Route path="student" element={<ProtectedRoutes element={<StudentLayout />} />}>
           <Route index element={<ProtectedRoutes element={<Home />} />} />
           <Route
             path="hackathon/:id"
-            // element={user ? <Hackathon /> : <Navigate to="/login" />}
             element={<ProtectedRoutes element={<Hackathon />} />}
           />
         </Route>
@@ -54,21 +54,6 @@ const App = () => {
     <AuthContext>
       <RouterProvider router={router} />
     </AuthContext>
-
-    // <Router>
-    //   <Routes>
-    //     <Route path="/login" element={<Login />} />
-    //     <Route
-    //       path="/"
-    //       element={user ? <Home /> : <Navigate to="/login" />}
-    //     />
-    //     <Route
-    //       path="/hackathon/:id"
-    //       // element={user ? <Hackathon /> : <Navigate to="/login" />}
-    //       element= {<Hackathon /> }
-    //     />
-    //   </Routes>
-    // </Router>
   );
 };
 

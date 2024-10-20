@@ -1,61 +1,62 @@
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import axios from 'axios';
+
 const Context = createContext();
 
 export const useAuth = () => useContext(Context);
 
 export default function AuthContext({ children }) {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
-    // set false initially
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [loading, setLoading] = useState(true);
-
-    const [user, setUser] = useState(null);
-
-    useEffect(() => {
-        const auth = getAuth();
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            
-            if (user) {
-                const newUser = {
-                    ...user,
-                    role: "admin" //change overall logic to get this user from backend
-                }
-                setUser(newUser);
-                setLogin();
-            } else {
-                setUser(null);
-            }
-        });
-
-        return () => unsubscribe();
-    }, []);
-
-
-    const setLogin = () => {
-        setIsAuthenticated(true);
-        setLoading(false);
-        //add code to save session
-    }
-    const setLogout = () => {
-        setIsAuthenticated(false);
-        // setLoading(false);
-        //add code to delete session
-    }
-
-    // Context value
-    const value = {
-        isAuthenticated,
-        loading,
-        setLogin,
-        setLogout, 
-        user, 
-        setUser
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/auth/status', { withCredentials: true });
+        if (response.status === 200) {
+          setUser(response.data.user);
+          setIsAdmin(response.data.isAdmin);
+          setLogin();
+        } else {
+          setLogout();
+        }
+      } catch (error) {
+        console.error('Error checking auth status:', error);
+        setLogout();
+      }
     };
 
-    return (
-        <Context.Provider value={value}>
-            {children}
-        </Context.Provider>
-    );
+    checkAuthStatus();
+  }, []);
+
+  const setLogin = () => {
+    setIsAuthenticated(true);
+    setLoading(false);
+  };
+
+  const setLogout = () => {
+    setIsAuthenticated(false);
+    setLoading(false);
+    setUser(null);
+    setIsAdmin(false);
+  };
+
+  // Context value
+  const value = {
+    isAuthenticated,
+    loading,
+    setLogin,
+    setLogout,
+    user,
+    isAdmin,
+    setUser
+  };
+
+  return (
+    <Context.Provider value={value}>
+      {children}
+    </Context.Provider>
+  );
 }

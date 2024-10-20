@@ -1,13 +1,17 @@
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
+const bcrypt = require('bcrypt');
+const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
 const app = express();
 const port = 3001;
 
 // Middleware
 app.use(express.json());
 app.use(cors({
-  origin: 'http://localhost:3000' // Allow requests from this origin
+  origin: 'http://localhost:3000', // Allow requests from this origin
+  credentials: true // Allow credentials (cookies)
 }));
 
 // MySQL connection
@@ -26,16 +30,32 @@ db.connect(err => {
   console.log('Connected to MySQL');
 });
 
+// Session store
+const sessionStore = new MySQLStore({}, db);
+
+// Session middleware
+app.use(session({
+  key: 'session_cookie_name',
+  secret: 'session_cookie_secret',
+  store: sessionStore,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 // 1 day
+  }
+}));
+
 // Routes
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
 // User Routes
-app.post('/users', (req, res) => {
-  const { name, email, profile_image } = req.body;
+app.post('/users', async (req, res) => {
+  const { name, email, password, dob } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
   const checkUserQuery = 'SELECT * FROM users WHERE email = ?';
-  const insertUserQuery = 'INSERT INTO users (name, email, profile_image) VALUES (?, ?, ?)';
+  const insertUserQuery = 'INSERT INTO users (name, email, password, DOB) VALUES (?, ?, ?, ?)';
 
   db.query(checkUserQuery, [email], (err, results) => {
     if (err) {
@@ -49,7 +69,7 @@ app.post('/users', (req, res) => {
       res.status(200).json(results[0]);
     } else {
       // Insert new user
-      db.query(insertUserQuery, [name, email, profile_image], (err, result) => {
+      db.query(insertUserQuery, [name, email, hashedPassword, dob], (err, result) => {
         if (err) {
           console.error('Error inserting user:', err);
           res.status(500).send('Error inserting user');
@@ -62,7 +82,7 @@ app.post('/users', (req, res) => {
 });
 
 app.get('/users', (req, res) => {
-  const query = 'SELECT * FROM users';
+  const query = 'SELECT *, calculate_age(DOB) AS age FROM users';
   db.query(query, (err, results) => {
     if (err) {
       console.error('Error fetching users:', err);
@@ -74,20 +94,44 @@ app.get('/users', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-  const { email } = req.body;
+  const { email, password } = req.body;
   const query = 'SELECT * FROM users WHERE email = ?';
-  db.query(query, [email], (err, results) => {
+  db.query(query, [email], async (err, results) => {
     if (err) {
       console.error('Error fetching user:', err);
       res.status(500).send('Error fetching user');
       return;
     }
     if (results.length > 0) {
-      res.status(200).json(results[0]);
+      const user = results[0];
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (isPasswordValid) {
+        req.session.user = user; // Save user in session
+        res.status(200).json(user);
+      } else {
+        res.status(401).send('Invalid credentials');
+      }
     } else {
       res.status(404).send('User not found');
     }
   });
+});
+
+app.get('/auth/status', async (req, res) => {
+  if (req.session.user) {
+    const user = req.session.user;
+    const isAdminQuery = 'SELECT * FROM admins WHERE email = ?';
+    db.query(isAdminQuery, [user.email], (err, results) => {
+      if (err) {
+        console.error('Error checking admin status:', err);
+        return res.status(500).send('Error checking admin status');
+      }
+      const isAdmin = results.length > 0;
+      res.status(200).json({ user, isAdmin });
+    });
+  } else {
+    res.status(401).send('Not authenticated');
+  }
 });
 
 // Hackathon Routes
@@ -170,7 +214,6 @@ app.put('/hackathons/:id', (req, res) => {
     res.status(200).send('Hackathon updated');
   });
 });
-
 
 // Start server
 app.listen(port, () => {
