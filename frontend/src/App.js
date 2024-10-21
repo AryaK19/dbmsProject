@@ -1,3 +1,4 @@
+
 import React from "react";
 import {
   Route,
@@ -21,6 +22,7 @@ import AdminHome from "./Admin/AdminHome";
 import AdminHackathon from "./Admin/AdminHackathon";
 import Profile from "./pages/Profile";
 import CreateEditHackathon from "./Admin/CreateEditHackathon";
+
 
 const App = () => {
   const router = createBrowserRouter(
@@ -51,9 +53,11 @@ const App = () => {
   );
 
   return (
+
     <AuthContext>
       <RouterProvider router={router} />
     </AuthContext>
+
   );
 };
 

@@ -6,6 +6,8 @@ const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 const app = express();
 const port = 3001;
+const userRoutes = require('./routes/users');
+const commentRoutes = require('./routes/comments');
 
 app.use(express.json());
 app.use(cors({
@@ -28,6 +30,7 @@ db.connect(err => {
   console.log('Connected to MySQL');
 });
 
+
 const sessionStore = new MySQLStore({}, db);
 
 app.use(session({
@@ -40,6 +43,11 @@ app.use(session({
     maxAge: 1000 * 60 * 60 * 24
   }
 }));
+
+// Routes
+app.use('/users', userRoutes);
+app.use('/comments', commentRoutes);
+
 
 app.get('/', (req, res) => {
   res.send('Hello World!');

@@ -8,7 +8,9 @@ const Navbar = () => {
   // const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
+
   const { user } = useAuth();
+
 
   // useEffect(() => {
   //   const fetchUser = async () => {
@@ -30,6 +32,10 @@ const Navbar = () => {
     navigate('/student');
   };
 
+  const goToProfilePage = () => {
+    navigate('/profile');
+  };
+
   return (
     <header className="fixed top-0 left-0 w-full p-4 bg-gray-800 flex justify-between items-center z-50 shadow-lg">
       <div className="flex items-center gap-4">
@@ -39,7 +45,7 @@ const Navbar = () => {
           <p className="text-gray-300">Connect with various hackathons and participate to showcase your skills.</p>
         </div>
       </div>
-      <div className="flex items-center space-x-2 cursor-pointer">
+      <div className="flex items-center space-x-2 cursor-pointer" onClick={goToProfilePage}>
         {user ? (
           <>
             <span className="text-gray-300 text-l">{user.name}</span>

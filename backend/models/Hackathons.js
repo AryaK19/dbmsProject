@@ -1,6 +1,8 @@
 // models/Hackathons.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
+const User = require('./User');
+const Registration = require('./Registration');
 
 const Hackathon = sequelize.define('Hackathon', {
   id: {
@@ -38,6 +40,12 @@ const Hackathon = sequelize.define('Hackathon', {
       key: 'id',
     },
   },
+}, {
+  tableName: 'hackathons',
+  timestamps: false, // Disable timestamps
 });
+
+// Hackathon.belongsToMany(User, { through: Registration, foreignKey: 'hackathon_id' });
+
 
 module.exports = Hackathon;
