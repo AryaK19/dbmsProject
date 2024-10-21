@@ -1,10 +1,15 @@
-// models/Hackathon.js
+// models/Hackathons.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 const User = require('./User');
 const Registration = require('./Registration');
 
 const Hackathon = sequelize.define('Hackathon', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
   name: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -15,8 +20,12 @@ const Hackathon = sequelize.define('Hackathon', {
   image_url: {
     type: DataTypes.STRING,
   },
-  organization: {
-    type: DataTypes.STRING,
+  organisation_id: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'organisations', 
+      key: 'id', 
+    },
   },
   participants: {
     type: DataTypes.INTEGER,
@@ -24,14 +33,12 @@ const Hackathon = sequelize.define('Hackathon', {
   date: {
     type: DataTypes.DATE,
   },
-  time: {
-    type: DataTypes.STRING,
-  },
-  contact_email: {
-    type: DataTypes.STRING,
-  },
-  contact_phone: {
-    type: DataTypes.STRING,
+  admin_id: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'admin',
+      key: 'id',
+    },
   },
 }, {
   tableName: 'hackathons',

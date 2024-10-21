@@ -1,18 +1,20 @@
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
+const bcrypt = require('bcrypt');
+const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
 const app = express();
 const port = 3001;
 const userRoutes = require('./routes/users');
 const commentRoutes = require('./routes/comments');
 
-// Middleware
 app.use(express.json());
 app.use(cors({
-  origin: 'http://localhost:3000' // Allow requests from this origin
+  origin: 'http://localhost:3000',
+  credentials: true
 }));
 
-// MySQL connection
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
@@ -28,84 +30,166 @@ db.connect(err => {
   console.log('Connected to MySQL');
 });
 
+
+const sessionStore = new MySQLStore({}, db);
+
+app.use(session({
+  key: 'session_cookie_name',
+  secret: 'session_cookie_secret',
+  store: sessionStore,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24
+  }
+}));
+
 // Routes
 app.use('/users', userRoutes);
 app.use('/comments', commentRoutes);
+
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-// User Routes
-app.post('/users', (req, res) => {
-  const { name, email, profile_image } = req.body;
+app.post('/users', async (req, res) => {
+  const { name, email, password, dob } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
   const checkUserQuery = 'SELECT * FROM users WHERE email = ?';
-  const insertUserQuery = 'INSERT INTO users (name, email, profile_image) VALUES (?, ?, ?)';
+  const insertUserQuery = 'INSERT INTO users (name, email, password, DOB) VALUES (?, ?, ?, ?)';
 
   db.query(checkUserQuery, [email], (err, results) => {
     if (err) {
       console.error('Error checking user:', err);
-      res.status(500).send('Error checking user');
+      res.send('Error checking user');
       return;
     }
 
     if (results.length > 0) {
-      // User already exists
-      res.status(200).json(results[0]);
+      res.json(results[0]);
     } else {
-      // Insert new user
-      db.query(insertUserQuery, [name, email, profile_image], (err, result) => {
+      db.query(insertUserQuery, [name, email, hashedPassword, dob], (err, result) => {
         if (err) {
           console.error('Error inserting user:', err);
-          res.status(500).send('Error inserting user');
+          res.send('Error inserting user');
           return;
         }
-        res.status(201).send('User created');
+        res.send('User created');
       });
     }
   });
 });
 
 app.get('/users', (req, res) => {
-  const query = 'SELECT * FROM users';
+  const query = 'SELECT *, calculate_age(DOB) AS age FROM users';
   db.query(query, (err, results) => {
     if (err) {
       console.error('Error fetching users:', err);
-      res.status(500).send('Error fetching users');
+      res.send('Error fetching users');
       return;
     }
-    res.status(200).json(results);
+    res.json(results);
   });
 });
 
 app.post('/login', (req, res) => {
-  const { email } = req.body;
-  const query = 'SELECT * FROM users WHERE email = ?';
-  db.query(query, [email], (err, results) => {
+  const { email, password } = req.body;
+  const adminQuery = 'SELECT * FROM admins WHERE email = ?';
+  const userQuery = 'SELECT * FROM users WHERE email = ?';
+
+  db.query(adminQuery, [email], async (err, adminResults) => {
     if (err) {
-      console.error('Error fetching user:', err);
-      res.status(500).send('Error fetching user');
+      console.error('Error fetching admin:', err);
+      res.send('Error fetching admin');
       return;
     }
-    if (results.length > 0) {
-      res.status(200).json(results[0]);
+
+    if (adminResults.length > 0) {
+      const admin = adminResults[0];
+      const isPasswordValid = await bcrypt.compare(password, admin.password);
+      if (isPasswordValid) {
+        req.session.user = admin;
+        req.session.isAdmin = true;
+        res.json({ user: admin, isAdmin: true });
+      } else {
+        res.send('Invalid credentials');
+      }
     } else {
-      res.status(404).send('User not found');
+      db.query(userQuery, [email], async (err, userResults) => {
+        if (err) {
+          console.error('Error fetching user:', err);
+          res.send('Error fetching user');
+          return;
+        }
+
+        if (userResults.length > 0) {
+          const user = userResults[0];
+          const isPasswordValid = await bcrypt.compare(password, user.password);
+          if (isPasswordValid) {
+            req.session.user = user;
+            req.session.isAdmin = false;
+            res.json({ user, isAdmin: false });
+          } else {
+            res.send('Invalid credentials');
+          }
+        } else {
+          res.send('User not found');
+        }
+      });
     }
   });
 });
 
-// Hackathon Routes
+app.get('/auth/status', async (req, res) => {
+  if (req.session.user) {
+    const user = req.session.user;
+    const isAdmin = req.session.isAdmin || false;
+    res.json({ success: true, user, isAdmin });
+  } else {
+    res.json({ success: false, user: null, isAdmin: false });
+  }
+});
+
+app.post('/admins', async (req, res) => {
+  const { name, email, password } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const checkAdminQuery = 'SELECT * FROM admins WHERE email = ?';
+  const insertAdminQuery = 'INSERT INTO admins (name, email, password) VALUES (?, ?, ?)';
+
+  db.query(checkAdminQuery, [email], (err, results) => {
+    if (err) {
+      console.error('Error checking admin:', err);
+      res.send('Error checking admin');
+      return;
+    }
+
+    if (results.length > 0) {
+      res.json(results[0]);
+    } else {
+      db.query(insertAdminQuery, [name, email, hashedPassword], (err, result) => {
+        if (err) {
+          console.error('Error inserting admin:', err);
+          res.send('Error inserting admin');
+          return;
+        }
+        res.send('Admin created');
+      });
+    }
+  });
+});
+
 app.post('/hackathons', (req, res) => {
   const { name, description, image_url, organization, participants, date, time, contact_email, contact_phone } = req.body;
+
   const query = 'INSERT INTO hackathons (name, description, image_url, organization, participants, date, time, contact_email, contact_phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
   db.query(query, [name, description, image_url, organization, participants, date, time, contact_email, contact_phone], (err, result) => {
     if (err) {
       console.error('Error inserting hackathon:', err);
-      res.status(500).send('Error inserting hackathon');
+      res.send('Error inserting hackathon');
       return;
     }
-    res.status(201).send('Hackathon created');
+    res.send('Hackathon created');
   });
 });
 
@@ -114,14 +198,66 @@ app.get('/hackathons', (req, res) => {
   db.query(query, (err, results) => {
     if (err) {
       console.error('Error fetching hackathons:', err);
-      res.status(500).send('Error fetching hackathons');
+      res.send('Error fetching hackathons');
       return;
     }
-    res.status(200).json(results);
+    res.json(results);
   });
 });
 
-// Start server
+app.get('/hackathons/:id', (req, res) => {
+  const hackathonId = req.params.id;
+  const query = 'SELECT * FROM hackathons WHERE id = ?';
+
+  db.query(query, [hackathonId], (err, results) => {
+    if (err) {
+      console.error('Error fetching hackathon:', err);
+      res.send('Error fetching hackathon');
+      return;
+    }
+
+    if (results.length > 0) {
+      res.json(results[0]);
+    } else {
+      res.send('Hackathon not found');
+    }
+  });
+});
+
+app.delete('/hackathons/:id', (req, res) => {
+  const { id } = req.params;
+  const query = 'DELETE FROM hackathons WHERE id = ?';
+  
+  db.query(query, [id], (err, result) => {
+    if (err) {
+      console.error('Error deleting hackathon:', err);
+      res.send('Error deleting hackathon');
+      return;
+    }
+    res.send();
+  });
+});
+
+app.put('/hackathons/:id', (req, res) => {
+  const { id } = req.params;
+  const { name, description, image_url, organization, participants, date, time, contact_email, contact_phone } = req.body;
+
+  const query = `
+    UPDATE hackathons 
+    SET name = ?, description = ?, image_url = ?, organization = ?, participants = ?, date = ?, time = ?, contact_email = ?, contact_phone = ? 
+    WHERE id = ?
+  `;
+
+  db.query(query, [name, description, image_url, organization, participants, date, time, contact_email, contact_phone, id], (err, result) => {
+    if (err) {
+      console.error('Error updating hackathon:', err);
+      res.send('Error updating hackathon');
+      return;
+    }
+    res.send('Hackathon updated');
+  });
+});
+
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });

@@ -1,7 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import Navbar from './Navbar';
-import Comments from '../components/Comments';
+
 
 const hackathons = [
   { id: 1, name: 'Hackathon 1', description: 'Description for Hackathon 1', imageUrl: 'https://via.placeholder.com/600x400', organization: 'Tech Innovators', rules: ['Rule 1', 'Rule 2', 'Rule 3'], prizes: ['1st Prize: $1000', '2nd Prize: $500', '3rd Prize: $250'], contact: { email: 'contact@hackathon.com', phone: '+1234567890' }, participants: 150, date: '2023-12-01', time: '10:00 AM - 6:00 PM', timetable: ['10:00 AM - Opening Ceremony', '11:00 AM - Coding Begins', '1:00 PM - Lunch Break', '2:00 PM - Coding Resumes', '5:00 PM - Project Submission', '6:00 PM - Closing Ceremony'] },
@@ -14,8 +13,7 @@ const Hackathon = () => {
   const hackathon = hackathons.find(h => h.id === parseInt(id));
 
   return (
-    <div className="p-4 bg-black min-h-screen text-white">
-      <Navbar />
+    
       <div className="container mx-auto flex flex-col md:flex-row gap-4 mt-24">
         {/* Left Container */}
         <div className="md:w-2/3 bg-gray-900 p-6 rounded-lg shadow-lg">
@@ -56,8 +54,7 @@ const Hackathon = () => {
           </ul>
         </div>
       </div>
-      <Comments hackathonId={id} />
-    </div>
+
   );
 };
 
