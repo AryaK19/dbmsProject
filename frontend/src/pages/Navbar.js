@@ -2,29 +2,32 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../Auth/AuthContext';
 
 const Navbar = () => {
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const email = localStorage.getItem('userEmail');
-      if (email) {
-        try {
-          const response = await axios.post('http://localhost:3001/login', { email });
-          setUser(response.data);
-        } catch (error) {
-          console.error('Error fetching user:', error);
-        }
-      }
-    };
+  const { user } = useAuth();
 
-    fetchUser();
-  }, []);
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     const email = localStorage.getItem('userEmail');
+  //     if (email) {
+  //       try {
+  //         const response = await axios.post('http://localhost:3001/auth/status', { email });
+  //         setUser(response.data);
+  //       } catch (error) {
+  //         console.error('Error fetching user:', error);
+  //       }
+  //     }
+  //   };
+
+  //   fetchUser();
+  // }, []);
 
   const goToHomePage = () => {
-    navigate('/');
+    navigate('/student');
   };
 
   return (

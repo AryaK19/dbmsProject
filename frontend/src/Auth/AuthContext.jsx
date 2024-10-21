@@ -16,7 +16,7 @@ export default function AuthContext({ children }) {
       try {
         console.log('Checking auth status...');
         const response = await axios.get('http://localhost:3001/auth/status', { withCredentials: true });
-        if (response.status === 200) {
+        if (response.data.success) {
           setUser(response.data.user);
           setIsAdmin(response.data.isAdmin);
           if (response.data.user) {

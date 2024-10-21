@@ -7,12 +7,14 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [dob, setDob] = useState('');
+  const [userType, setUserType] = useState('student'); // Default to student
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    const endpoint = userType === 'admin' ? 'http://localhost:3001/admins' : 'http://localhost:3001/users';
     try {
-      const response = await axios.post('http://localhost:3001/users', { name, email, password, dob });
+      const response = await axios.post(endpoint, { name, email, password, dob });
       if (response.status === 201) {
         navigate('/login'); 
       }
@@ -57,15 +59,29 @@ const Register = () => {
               required
             />
           </div>
+          {userType === 'student' && (
+            <div className="mb-4">
+              <label className="block text-gray-300">Year of Birth</label>
+              <input
+                type="number"
+                value={dob}
+                onChange={(e) => setDob(e.target.value)}
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                required
+              />
+            </div>
+          )}
           <div className="mb-4">
-            <label className="block text-gray-300">Year of Birth</label>
-            <input
-              type="number"
-              value={dob}
-              onChange={(e) => setDob(e.target.value)}
+            <label className="block text-gray-300">Register as</label>
+            <select
+              value={userType}
+              onChange={(e) => setUserType(e.target.value)}
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
               required
-            />
+            >
+              <option value="student">Student</option>
+              <option value="admin">Admin</option>
+            </select>
           </div>
           <button
             type="submit"
