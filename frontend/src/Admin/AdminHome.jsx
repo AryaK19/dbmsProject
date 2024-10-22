@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { FaUserCircle } from 'react-icons/fa'; // For the profile icon
 import { fetchHackathons } from '../service/api';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
-// Placeholder component for AdminHackathon
 const AdminHome = () => {
   const [hackathons, setHackathons] = useState([]);
   const navigate = useNavigate();
@@ -21,7 +20,6 @@ const AdminHome = () => {
     getHackathons();
   }, []);
 
-
   const handleNavigate = (id) => {
     navigate(`/admin/hackathon/${id}`); 
   };
@@ -35,42 +33,42 @@ const AdminHome = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6 relative">
-      {/* Profile Icon */}
-      <div className="absolute top-6 right-6" onClick={goToProfile}>
-        <FaUserCircle size={40} className="text-gray-600 cursor-pointer" />
-      </div>
+    <div className="min-h-screen bg-gray-900">
+      {/* Navbar */}
+      <nav className="bg-gray-800 p-4 flex justify-between items-center">
+        <Link to="/" className="text-white text-lg font-semibold">Admin Dashboard</Link>
+        <div className="flex items-center">
+          <button 
+            className="bg-teal-500 text-white py-2 px-4 rounded-md hover:bg-teal-600 mr-4"
+            onClick={createNewHackathon}
+          >
+            Organise New Hackathon
+          </button>
+          <FaUserCircle size={40} className="text-gray-300 cursor-pointer" onClick={goToProfile} />
+        </div>
+      </nav>
 
-      {/* Organise Hackathon Button */}
-      <div className="text-center mb-8">
-        <button className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600" 
-        onClick={createNewHackathon}
-        >
-          Organise New Hackathon
-        </button>
-      </div>
-
-      {/* List of Hackathons */}
-     
-      <div>
-        <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
+      <main className="p-6 rounded-lg shadow-lg mt-8">
+        <h2 className="text-2xl font-semibold mb-4 text-center" style={{ color: '#3cd7b8' }}>
           Hackathons Organised till now
         </h2>
-        {hackathons.length > 0 ? (
-          hackathons.map((hackathon) => (
-            <div
-              key={hackathon.id}
-              className="p-4 bg-white shadow-md rounded-md mb-4 cursor-pointer"
-              onClick={() => handleNavigate(hackathon.id)} // On click, navigate to hackathon page
-            >
-              <h3 className="text-lg font-bold">{hackathon.name}</h3>
-              <p className="text-gray-600">{hackathon.description}</p>
-            </div>
-          ))
-        ) : (
-          <p className='font-bold text-gray-800'>No hackathons available</p>
-        )}
-      </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {hackathons.length > 0 ? (
+            hackathons.map((hackathon) => (
+              <div
+                key={hackathon.id}
+                className="bg-gray-800 p-4 rounded-lg shadow-inner cursor-pointer"
+                onClick={() => handleNavigate(hackathon.id)} // On click, navigate to hackathon page
+              >
+                <h3 className="text-lg font-semibold mb-2" style={{ color: '#3cd7b8' }}>{hackathon.name}</h3>
+                <p className="text-gray-300">{hackathon.description}</p>
+              </div>
+            ))
+          ) : (
+            <p className='font-bold text-gray-300'>No hackathons available</p>
+          )}
+        </div>
+      </main>
     </div>
   );
 };

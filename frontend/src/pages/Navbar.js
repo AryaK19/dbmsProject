@@ -1,33 +1,17 @@
-// src/components/Navbar.js
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { useAuth } from '../Auth/AuthContext';
 
 const Navbar = () => {
-  // const [user, setUser] = useState(null);
   const navigate = useNavigate();
-
   const { user } = useAuth();
-
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     const email = localStorage.getItem('userEmail');
-  //     if (email) {
-  //       try {
-  //         const response = await axios.post('http://localhost:3001/auth/status', { email });
-  //         setUser(response.data);
-  //       } catch (error) {
-  //         console.error('Error fetching user:', error);
-  //       }
-  //     }
-  //   };
-
-  //   fetchUser();
-  // }, []);
 
   const goToHomePage = () => {
     navigate('/student');
+  };
+
+  const goToProfilePage = () => {
+    navigate('/student/profile');
   };
 
   return (
@@ -39,7 +23,7 @@ const Navbar = () => {
           <p className="text-gray-300">Connect with various hackathons and participate to showcase your skills.</p>
         </div>
       </div>
-      <div className="flex items-center space-x-2 cursor-pointer">
+      <div className="flex items-center space-x-2 cursor-pointer" onClick={goToProfilePage}>
         {user ? (
           <>
             <span className="text-gray-300 text-l">{user.name}</span>

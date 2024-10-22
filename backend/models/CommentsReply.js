@@ -1,8 +1,8 @@
-// models/CommentsReply.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
 const CommentsReply = sequelize.define('CommentsReply', {
+
   comment_id: {
     type: DataTypes.INTEGER,
     allowNull: false,

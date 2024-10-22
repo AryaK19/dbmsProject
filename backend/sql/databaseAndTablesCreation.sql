@@ -17,18 +17,19 @@ CREATE TABLE user_dob(
     
 );
 
-CREATE TABLE admin(
+CREATE TABLE admins(
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	name VARCHAR(255) NOT NULL,
 	email VARCHAR(255) UNIQUE NOT NULL,
-	password VARCHAR(255) NULL
+	password VARCHAR(255) NULL,
+  contact VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE organisations(
 	id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-	contact_email VARCHAR(255),
-	contact_phone VARCHAR(255)
+  name VARCHAR(255) NOT NULL,
+	email VARCHAR(255)
+
 );
 
 
@@ -38,11 +39,11 @@ CREATE TABLE hackathons (
   description TEXT,
   image_url VARCHAR(255),
   organisation_id INT,
-  participants INT,
+  participants INT DEFAULT 0 ,
   date DATE,
   admin_id INT,
   
-  FOREIGN KEY (admin_id) REFERENCES admin(id),
+  FOREIGN KEY (admin_id) REFERENCES admins(id),
   FOREIGN KEY (organisation_id) REFERENCES organisations(id)
 );
 

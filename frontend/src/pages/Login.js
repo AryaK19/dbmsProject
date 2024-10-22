@@ -13,10 +13,11 @@ const Login = () => {
       const response = await axios.post('http://localhost:3001/login', { email, password }, { withCredentials: true });
       if (response.status === 200) {
         console.log('Logged in');
+        console.log(response.data);
         if (response.data.isAdmin) {
-          navigate('/admin'); 
+          navigate('/admin');
         } else {
-          navigate('/student');
+          return navigate('/student');
         }
       }
     } catch (error) {

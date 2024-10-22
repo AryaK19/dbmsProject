@@ -27,7 +27,7 @@ const Home = () => {
             <img src={hackathon.image_url} alt={hackathon.name} className="w-full h-64 object-cover rounded-lg mb-4" />
             <h3 className="text-lg font-semibold mb-2" style={{ color: '#3cd7b8' }}>{hackathon.name}</h3>
             <p className="text-gray-300">{hackathon.description}</p>
-            <Link to={`/hackathon/${hackathon.id}`}>
+            <Link to={`hackathon/${hackathon.id}`}>
               <button className="mt-4 bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600">Know More</button>
             </Link>
           </div>

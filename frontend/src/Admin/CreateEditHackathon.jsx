@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { createNewHackathon, fetchHackathons, updateHackathon } from '../service/api';
+import { useAuth } from '../Auth/AuthContext';
 
 const CreateEditHackathon = () => {
   const { id } = useParams(); // Get hackathon ID from URL params (if editing)
   const navigate = useNavigate();
+  const { user } = useAuth();
   
   const [hackathon, setHackathon] = useState({
     name: '',
     description: '',
     image_url: '',
-    organization: '',
-    participants: 0,
+    organisation_name: '',
+    organisation_email: '',
     date: '',
-    time: '',
-    contact_email: '',
-    contact_phone: '',
+    admin_id: user.id,
   });
 
   useEffect(() => {
@@ -53,115 +53,79 @@ const CreateEditHackathon = () => {
   };
 
   return (
-    <div className="p-6 bg-white shadow-lg rounded-lg max-w-3xl mx-auto mt-8">
-      <h2 className="text-2xl font-bold mb-4">{id ? 'Edit Hackathon' : 'Create Hackathon'}</h2>
+    <div className="p-6 bg-gray-900 shadow-lg rounded-lg max-w-3xl mx-auto mt-8">
+      <h2 className="text-2xl font-bold mb-4 text-white">{id ? 'Edit Hackathon' : 'Create Hackathon'}</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label className="block text-gray-700" htmlFor="name">Name</label>
+          <label className="block text-gray-300" htmlFor="name">Name</label>
           <input 
             type="text" 
             name="name" 
             id="name" 
             value={hackathon.name} 
             onChange={handleChange} 
-            className="w-full border rounded-md p-2" 
+            className="w-full border rounded-md p-2 bg-gray-800 text-white" 
             required 
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700" htmlFor="description">Description</label>
+          <label className="block text-gray-300" htmlFor="description">Description</label>
           <textarea 
             name="description" 
             id="description" 
             value={hackathon.description} 
             onChange={handleChange} 
-            className="w-full border rounded-md p-2" 
+            className="w-full border rounded-md p-2 bg-gray-800 text-white" 
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700" htmlFor="image_url">Image URL</label>
+          <label className="block text-gray-300" htmlFor="image_url">Image URL</label>
           <input 
             type="text" 
             name="image_url" 
             id="image_url" 
             value={hackathon.image_url} 
             onChange={handleChange} 
-            className="w-full border rounded-md p-2" 
+            className="w-full border rounded-md p-2 bg-gray-800 text-white" 
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700" htmlFor="organization">Organization</label>
+          <label className="block text-gray-300" htmlFor="organisation_name">Organization Name</label>
           <input 
             type="text" 
-            name="organization" 
-            id="organization" 
-            value={hackathon.organization} 
+            name="organisation_name" 
+            id="organisation_name" 
+            value={hackathon.organisation_name} 
             onChange={handleChange} 
-            className="w-full border rounded-md p-2" 
+            className="w-full border rounded-md p-2 bg-gray-800 text-white" 
             required 
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700" htmlFor="participants">Participants</label>
+          <label className="block text-gray-300" htmlFor="organisation_email">Organization Email</label>
           <input 
-            type="number" 
-            name="participants" 
-            id="participants" 
-            value={hackathon.participants} 
+            type="email" 
+            name="organisation_email" 
+            id="organisation_email" 
+            value={hackathon.organisation_email} 
             onChange={handleChange} 
-            className="w-full border rounded-md p-2" 
+            className="w-full border rounded-md p-2 bg-gray-800 text-white" 
             required 
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700" htmlFor="date">Date</label>
+          <label className="block text-gray-300" htmlFor="date">Date</label>
           <input 
             type="date" 
             name="date" 
             id="date" 
             value={hackathon.date} 
             onChange={handleChange} 
-            className="w-full border rounded-md p-2" 
+            className="w-full border rounded-md p-2 bg-gray-800 text-white" 
             required 
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-700" htmlFor="time">Time</label>
-          <input 
-            type="text" 
-            name="time" 
-            id="time" 
-            value={hackathon.time} 
-            onChange={handleChange} 
-            className="w-full border rounded-md p-2" 
-            required 
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700" htmlFor="contact_email">Contact Email</label>
-          <input 
-            type="email" 
-            name="contact_email" 
-            id="contact_email" 
-            value={hackathon.contact_email} 
-            onChange={handleChange} 
-            className="w-full border rounded-md p-2" 
-            required 
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700" htmlFor="contact_phone">Contact Phone</label>
-          <input 
-            type="text" 
-            name="contact_phone" 
-            id="contact_phone" 
-            value={hackathon.contact_phone} 
-            onChange={handleChange} 
-            className="w-full border rounded-md p-2" 
-            required 
-          />
-        </div>
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">
+        <button type="submit" className="bg-teal-500 text-white px-4 py-2 rounded-md hover:bg-teal-600">
           {id ? 'Update Hackathon' : 'Create Hackathon'}
         </button>
       </form>

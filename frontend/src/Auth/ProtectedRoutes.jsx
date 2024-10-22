@@ -4,6 +4,7 @@ import Loading from "../extra/Loading";
 
 export const ProtectedRoutes = ({ element }) => {
   const { isAuthenticated, loading } = useAuth();
+  console.log("gjhg" )
 
   if (loading) return <Loading />;
 

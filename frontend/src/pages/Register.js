@@ -7,16 +7,20 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [dob, setDob] = useState('');
+  const [contact, setContact] = useState('');
   const [userType, setUserType] = useState('student'); // Default to student
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
     const endpoint = userType === 'admin' ? 'http://localhost:3001/admins' : 'http://localhost:3001/users';
+    const payload = userType === 'admin' ? { name, email, password, contact } : { name, email, password, dob };
     try {
-      const response = await axios.post(endpoint, { name, email, password, dob });
-      if (response.status === 201) {
+      const response = await axios.post(endpoint, payload);
+      if (response.data.success) {
         navigate('/login'); 
+      } else {
+        alert(response.data.message);
       }
     } catch (error) {
       console.error('Error registering:', error);
@@ -66,6 +70,18 @@ const Register = () => {
                 type="number"
                 value={dob}
                 onChange={(e) => setDob(e.target.value)}
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                required
+              />
+            </div>
+          )}
+          {userType === 'admin' && (
+            <div className="mb-4">
+              <label className="block text-gray-300">Contact (Phone)</label>
+              <input
+                type="text"
+                value={contact}
+                onChange={(e) => setContact(e.target.value)}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
                 required
               />
