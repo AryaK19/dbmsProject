@@ -1,10 +1,10 @@
-const express = require("express");
-const db = require("../config/database"); // Adjust the path as needed
+const express = require('express');
+const db = require('../config/database'); // Adjust the path as needed
 
 const router = express.Router();
 
 // Fetch comments for a hackathon
-router.get("/hackathons/:hackathonId/comments", (req, res) => {
+router.get('/hackathons/:hackathonId/comments', (req, res) => {
   const { hackathonId } = req.params;
   const query = `
     SELECT c.id AS comment_id, c.content, cr.reply 
@@ -15,8 +15,8 @@ router.get("/hackathons/:hackathonId/comments", (req, res) => {
 
   db.query(query, [hackathonId], (err, results) => {
     if (err) {
-      console.error("Error fetching comments:", err);
-      res.status(500).send("Error fetching comments");
+      console.error('Error fetching comments:', err);
+      res.status(500).send('Error fetching comments');
       return;
     }
 
@@ -42,7 +42,7 @@ router.get("/hackathons/:hackathonId/comments", (req, res) => {
 });
 
 // Post a new comment
-router.post("/hackathons/:hackathonId/comments", (req, res) => {
+router.post('/hackathons/:hackathonId/comments', (req, res) => {
   const { hackathonId } = req.params;
   const { content, user_id } = req.body;
   const query = `
@@ -52,8 +52,8 @@ router.post("/hackathons/:hackathonId/comments", (req, res) => {
 
   db.query(query, [content, user_id, hackathonId], (err, result) => {
     if (err) {
-      console.error("Error posting comment:", err);
-      res.status(500).send("Error posting comment");
+      console.error('Error posting comment:', err);
+      res.status(500).send('Error posting comment');
       return;
     }
     res.json({
@@ -66,7 +66,7 @@ router.post("/hackathons/:hackathonId/comments", (req, res) => {
 });
 
 // Post a reply to a comment
-router.post("/comments/:commentId/replies", (req, res) => {
+router.post('/comments/:commentId/replies', (req, res) => {
   const { commentId } = req.params;
   const { reply } = req.body;
   const query = `
@@ -76,11 +76,11 @@ router.post("/comments/:commentId/replies", (req, res) => {
 
   db.query(query, [commentId, reply], (err, result) => {
     if (err) {
-      console.error("Error posting reply:", err);
-      res.status(500).send("Error posting reply");
+      console.error('Error posting reply:', err);
+      res.status(500).send('Error posting reply');
       return;
     }
-    res.json({ comment_id: commentId, reply });
+    res.json({ id: result.insertId, comment_id: commentId, reply });
   });
 });
 

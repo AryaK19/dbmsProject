@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../Auth/AuthContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const {setUser, setIsAdmin} = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -14,10 +16,13 @@ const Login = () => {
       if (response.status === 200) {
         console.log('Logged in');
         console.log(response.data);
+        setUser(response.data.user);
+        setIsAdmin(response.data.isAdmin);
         if (response.data.isAdmin) {
           navigate('/admin');
         } else {
-          return navigate('/student');
+          
+          navigate('/student');
         }
       }
     } catch (error) {
@@ -28,7 +33,7 @@ const Login = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-900">
-      <div className="bg-gray-800 p-8 rounded-lg shadow-lg">
+      <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
         <h1 className="text-2xl font-bold mb-4" style={{ color: '#3cd7b8' }}>Login</h1>
         <form onSubmit={handleLogin}>
           <div className="mb-4">

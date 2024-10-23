@@ -1,0 +1,84 @@
+1	Arya 	2@2	$2b$10$3EtNj23h/AyykFSnXcP39u.kU6dJ3iHR46XbjxDTys7aS1t43nzZ6		2004
+106	Aarav Sharma	aarav.sharma1@example.com	password123	https://example.com/profile1.jpg	1995
+107	Vivaan Patel	vivaan.patel2@example.com	password123	https://example.com/profile2.jpg	1996
+108	Aditya Singh	aditya.singh3@example.com	password123	https://example.com/profile3.jpg	1997
+109	Vihaan Gupta	vihaan.gupta4@example.com	password123	https://example.com/profile4.jpg	1998
+110	Arjun Kumar	arjun.kumar5@example.com	password123	https://example.com/profile5.jpg	1999
+111	Sai Reddy	sai.reddy6@example.com	password123	https://example.com/profile6.jpg	2000
+112	Reyansh Mehta	reyansh.mehta7@example.com	password123	https://example.com/profile7.jpg	2001
+113	Ayaan Joshi	ayaan.joshi8@example.com	password123	https://example.com/profile8.jpg	2002
+114	Krishna Nair	krishna.nair9@example.com	password123	https://example.com/profile9.jpg	2003
+115	Ishaan Desai	ishaan.desai10@example.com	password123	https://example.com/profile10.jpg	2004
+116	Arnav Sharma	arnav.sharma11@example.com	password123	https://example.com/profile11.jpg	1995
+117	Kabir Patel	kabir.patel12@example.com	password123	https://example.com/profile12.jpg	1996
+118	Atharv Singh	atharv.singh13@example.com	password123	https://example.com/profile13.jpg	1997
+119	Dhruv Gupta	dhruv.gupta14@example.com	password123	https://example.com/profile14.jpg	1998
+120	Rudra Kumar	rudra.kumar15@example.com	password123	https://example.com/profile15.jpg	1999
+121	Arnav Reddy	arnav.reddy16@example.com	password123	https://example.com/profile16.jpg	2000
+122	Shaurya Mehta	shaurya.mehta17@example.com	password123	https://example.com/profile17.jpg	2001
+123	Aarush Joshi	aarush.joshi18@example.com	password123	https://example.com/profile18.jpg	2002
+124	Anay Nair	anay.nair19@example.com	password123	https://example.com/profile19.jpg	2003
+125	Aarav Desai	aarav.desai20@example.com	password123	https://example.com/profile20.jpg	2004
+126	Anika Sharma	anika.sharma21@example.com	password123	https://example.com/profile21.jpg	1995
+127	Aadhya Patel	aadhya.patel22@example.com	password123	https://example.com/profile22.jpg	1996
+128	Diya Singh	diya.singh23@example.com	password123	https://example.com/profile23.jpg	1997
+129	Myra Gupta	myra.gupta24@example.com	password123	https://example.com/profile24.jpg	1998
+130	Anaya Kumar	anaya.kumar25@example.com	password123	https://example.com/profile25.jpg	1999
+131	Aarohi Reddy	aarohi.reddy26@example.com	password123	https://example.com/profile26.jpg	2000
+132	Ira Mehta	ira.mehta27@example.com	password123	https://example.com/profile27.jpg	2001
+133	Avni Joshi	avni.joshi28@example.com	password123	https://example.com/profile28.jpg	2002
+134	Saanvi Nair	saanvi.nair29@example.com	password123	https://example.com/profile29.jpg	2003
+135	Aanya Desai	aanya.desai30@example.com	password123	https://example.com/profile30.jpg	2004
+136	Anvi Sharma	anvi.sharma31@example.com	password123	https://example.com/profile31.jpg	1995
+137	Aaradhya Patel	aaradhya.patel32@example.com	password123	https://example.com/profile32.jpg	1996
+138	Kiara Singh	kiara.singh33@example.com	password123	https://example.com/profile33.jpg	1997
+139	Aadhira Gupta	aadhira.gupta34@example.com	password123	https://example.com/profile34.jpg	1998
+140	Anika Kumar	anika.kumar35@example.com	password123	https://example.com/profile35.jpg	1999
+141	Aarohi Reddy	aarohi.reddy36@example.com	password123	https://example.com/profile36.jpg	2000
+142	Ira Mehta	ira.mehta37@example.com	password123	https://example.com/profile37.jpg	2001
+143	Avni Joshi	avni.joshi38@example.com	password123	https://example.com/profile38.jpg	2002
+144	Saanvi Nair	saanvi.nair39@example.com	password123	https://example.com/profile39.jpg	2003
+145	Aanya Desai	aanya.desai40@example.com	password123	https://example.com/profile40.jpg	2004
+146	Anvi Sharma	anvi.sharma41@example.com	password123	https://example.com/profile41.jpg	1995
+147	Aaradhya Patel	aaradhya.patel42@example.com	password123	https://example.com/profile42.jpg	1996
+148	Kiara Singh	kiara.singh43@example.com	password123	https://example.com/profile43.jpg	1997
+149	Aadhira Gupta	aadhira.gupta44@example.com	password123	https://example.com/profile44.jpg	1998
+150	Anika Kumar	anika.kumar45@example.com	password123	https://example.com/profile45.jpg	1999
+151	Aarohi Reddy	aarohi.reddy46@example.com	password123	https://example.com/profile46.jpg	2000
+152	Ira Mehta	ira.mehta47@example.com	password123	https://example.com/profile47.jpg	2001
+153	Avni Joshi	avni.joshi48@example.com	password123	https://example.com/profile48.jpg	2002
+154	Saanvi Nair	saanvi.nair49@example.com	password123	https://example.com/profile49.jpg	2003
+155	Aanya Desai	aanya.desai50@example.com	password123	https://example.com/profile50.jpg	2004
+156	Anvi Sharma	anvi.sharma51@example.com	password123	https://example.com/profile51.jpg	1995
+157	Aaradhya Patel	aaradhya.patel52@example.com	password123	https://example.com/profile52.jpg	1996
+					
+
+1	Arya	1@1	$2b$10$Jt/gfetlvCEw2n6FeLBYd.lGiS0sFNJgMRD19e3Fz/t3QKPJoFUu2	1234567891
+2	Arya Sharma	arya.sharma@example.com	$2b$10$3EtNj23h/AyykFSnXcP39u.kU6dJ3iHR46XbjxDTys7aS1t43nzZ6	987653210
+3	Rohan Mehta	rohan.mehta@example.com	$2b$10$3EtNj23h/AyykFSnXcP39u.kU6dJ3iHR46XbjxDTys7aS1t43nzZ6	987654211
+4	Priya Singh	priya.singh@example.com	$2b$10$3EtNj23h/AyykFSnXcP39u.kU6dJ3iHR46XbjxDTys7aS1t43nzZ6	987654212
+5	Anjali Gupta	anjali.gupta@example.com	$2b$10$3EtNj23h/AyykFSnXcP39u.kU6dJ3iHR46XbjxDTys7aS1t43nzZ6	987643213
+				
+
+1	asdasdasd	aryakadam348@gmail.com
+2	ARYA.CO	aryakadam348@gmail.com
+3	Tech Innovators	contact@techinnovators.com
+4	Code Masters	info@codemasters.com
+5	Future Coders	support@futurecoders.com
+6	Hackathon Hub	admin@hackathonhub.com
+		
+
+
+5	FutureTech Hackathon	Explore the future of technology with like-minded individuals.	https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7jydnajoN9ZZvmVi5BM6SoFB-MaVieCYYzQ&s	5	180	2024-01-20	4
+2	ISRO hacthon	THIS IS A VERY GOOD HACAHTON	https://ideafoster.com/wp-content/uploads/2023/03/hackaton-concepto-funciona-922.jpeg	2	0	2024-10-09	1
+8	Code Masters Marathon	A marathon coding event for the best coders.	https://ideafoster.com/wp-content/uploads/2023/03/hackaton-concepto-funciona-922.jpeg	4	250	2024-04-15	3
+1	Arya Jalindar Kadam	awdasdasd	https://media.istockphoto.com/id/1189767041/vector/hackathon-signs-round-design-template-thin-line-icon-concept-vector.jpg?s=612x612&w=0&k=20&c=DW-btIjpNjItFfk35N4KvrMkoGoqd1rEPwb_uV9IZEU=	1	0	2024-10-17	1
+4	CodeFest 2023	Join us for a weekend of coding, collaboration, and creativity.	https://media.istockphoto.com/id/1189767041/vector/hackathon-signs-round-design-template-thin-line-icon-concept-vector.jpg?s=612x612&w=0&k=20&c=DW-btIjpNjItFfk35N4KvrMkoGoqd1rEPwb_uV9IZEU=	4	200	2023-12-01	3
+6	Hackathon Hub Challenge	Solve real-world problems and win exciting prizes.	https://media.istockphoto.com/id/1189767041/vector/hackathon-signs-round-design-template-thin-line-icon-concept-vector.jpg?s=612x612&w=0&k=20&c=DW-btIjpNjItFfk35N4KvrMkoGoqd1rEPwb_uV9IZEU=	6	220	2024-02-10	5
+3	InnovateX Hackathon	A hackathon focused on innovative solutions for modern problems.	https://media.istockphoto.com/id/1484758991/photo/hackathon-concept-the-meeting-at-the-white-office-table.jpg?s=612x612&w=0&k=20&c=ifl2F6QptCk87wh82yIX7HLILdvmoMdJeB92zr4BR6o=	3	150	2023-11-15	2
+7	Tech Innovators Sprint	A sprint to develop innovative tech solutions.	https://www.commbox.io/wp-content/uploads/2023/12/Why-You-Should-Start-Building-Your-Hackathon-for-Support-Professionals-5-Tips-For-Running-Successful-Hackathons.jpeg	3	160	2024-03-05	2
+							
+
+
+
+                            

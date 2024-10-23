@@ -122,4 +122,20 @@ router.get('/profile/:id', (req, res) => {
   });
 });
 
+
+router.put('/profile/:id', (req, res) => {
+  const userId = req.params.id;
+  const { name, email, imageUrl, dob } = req.body;
+  const query = 'UPDATE users SET name = ?, email = ?, profile_image = ?, DOB = ? WHERE id = ?';
+
+  db.query(query, [name, email, imageUrl, dob, userId], (err, result) => {
+    if (err) {
+      console.error('Error updating profile:', err);
+      res.status(500).send('Error updating profile');
+      return;
+    }
+    res.json({ success: true, message: 'Profile updated' });
+  });
+});
+
 module.exports = router;

@@ -56,7 +56,8 @@ export default function AuthContext({ children }) {
     setLogout,
     user,
     isAdmin,
-    setUser
+    setUser,
+    setIsAdmin,
   };
 
   return (

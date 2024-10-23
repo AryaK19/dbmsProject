@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { createNewHackathon, fetchHackathons, updateHackathon } from '../service/api';
+import { createNewHackathon, fetchHackathons, updateHackathon, addImagesToGallery } from '../service/api';
 import { useAuth } from '../Auth/AuthContext';
 
 const CreateEditHackathon = () => {
@@ -17,6 +17,8 @@ const CreateEditHackathon = () => {
     date: '',
     admin_id: user.id,
   });
+
+  const [galleryImages, setGalleryImages] = useState(['']); // State to manage gallery images
 
   useEffect(() => {
     if (id) {
@@ -38,13 +40,25 @@ const CreateEditHackathon = () => {
     setHackathon({ ...hackathon, [name]: value });
   };
 
+  const handleGalleryChange = (index, value) => {
+    const newGalleryImages = [...galleryImages];
+    newGalleryImages[index] = value;
+    setGalleryImages(newGalleryImages);
+  };
+
+  const addGalleryImageField = () => {
+    setGalleryImages([...galleryImages, '']);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (id) {
         await updateHackathon(id, hackathon);
+        await addImagesToGallery(id, galleryImages); // Ensure images are added when updating
       } else {
-        await createNewHackathon(hackathon);
+        const newHackathon = await createNewHackathon(hackathon);
+        await addImagesToGallery(newHackathon.id, galleryImages);
       }
       navigate('/admin'); 
     } catch (err) {
@@ -124,6 +138,22 @@ const CreateEditHackathon = () => {
             className="w-full border rounded-md p-2 bg-gray-800 text-white" 
             required 
           />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-300" htmlFor="gallery">Gallery Images</label>
+          {galleryImages.map((url, index) => (
+            <div key={index} className="flex mb-2">
+              <input 
+                type="text" 
+                value={url} 
+                onChange={(e) => handleGalleryChange(index, e.target.value)} 
+                className="w-full border rounded-md p-2 bg-gray-800 text-white mr-2" 
+              />
+              <button type="button" onClick={addGalleryImageField} className="bg-teal-500 text-white px-2 py-1 rounded-md hover:bg-teal-600">
+                Add
+              </button>
+            </div>
+          ))}
         </div>
         <button type="submit" className="bg-teal-500 text-white px-4 py-2 rounded-md hover:bg-teal-600">
           {id ? 'Update Hackathon' : 'Create Hackathon'}

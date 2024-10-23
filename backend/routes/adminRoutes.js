@@ -32,4 +32,34 @@ router.post('/admins', async (req, res) => {
   });
 });
 
+
+router.get('/hackathons/:id/participants', (req, res) => {
+  const hackathonId = req.params.id;
+  const query = 'SELECT id, name FROM hackathon_participants_view WHERE hackathon_id = ?';
+
+  db.query(query, [hackathonId], (err, results) => {
+    if (err) {
+      console.error('Error fetching participants:', err);
+      res.status(500).send('Error fetching participants');
+      return;
+    }
+    res.json(results);
+  });
+});
+
+router.get('/adminHackathons/:id', (req, res) => {
+  const adminId = req.params.id;
+  const query = 'SELECT * FROM hackathons WHERE admin_id = ?';
+  
+  db.query(query, [adminId], (err, results) => {
+    if (err) {
+      console.error('Error fetching hackathons:', err);
+      res.status(500).send('Error fetching hackathons');
+      return;
+    }
+    res.json(results);
+  });
+});
+
+
 module.exports = router;

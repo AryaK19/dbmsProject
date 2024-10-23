@@ -8,10 +8,8 @@ const EditProfile = () => {
   const [user, setUser] = useState({
     name: '',
     email: '',
-    bio: '',
-    phone: '',
-    location: '',
-    imageUrl: ''
+    imageUrl: '',
+    dob: '' // Add DOB to the state
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -42,7 +40,7 @@ const EditProfile = () => {
     e.preventDefault();
     try {
       await axios.put(`http://localhost:3001/profile/${authUser.id}`, user, { withCredentials: true });
-      navigate('/profile');
+      navigate('/student/profile');
     } catch (error) {
       console.error('Error updating profile:', error);
       setError('Error updating profile');
@@ -83,38 +81,7 @@ const EditProfile = () => {
             className="w-full p-2 rounded bg-gray-800 text-white"
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-300 mb-2" htmlFor="bio">Bio</label>
-          <textarea
-            id="bio"
-            name="bio"
-            value={user.bio}
-            onChange={handleChange}
-            className="w-full p-2 rounded bg-gray-800 text-white"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-300 mb-2" htmlFor="phone">Phone</label>
-          <input
-            type="text"
-            id="phone"
-            name="phone"
-            value={user.phone}
-            onChange={handleChange}
-            className="w-full p-2 rounded bg-gray-800 text-white"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-300 mb-2" htmlFor="location">Location</label>
-          <input
-            type="text"
-            id="location"
-            name="location"
-            value={user.location}
-            onChange={handleChange}
-            className="w-full p-2 rounded bg-gray-800 text-white"
-          />
-        </div>
+
         <div className="mb-4">
           <label className="block text-gray-300 mb-2" htmlFor="imageUrl">Profile Image URL</label>
           <input
@@ -122,6 +89,17 @@ const EditProfile = () => {
             id="imageUrl"
             name="imageUrl"
             value={user.imageUrl}
+            onChange={handleChange}
+            className="w-full p-2 rounded bg-gray-800 text-white"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-300 mb-2" htmlFor="dob">Year of Birth</label>
+          <input
+            type="number"
+            id="dob"
+            name="dob"
+            value={user.dob}
             onChange={handleChange}
             className="w-full p-2 rounded bg-gray-800 text-white"
           />

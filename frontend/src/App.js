@@ -18,6 +18,8 @@ import StudentLayout from "./Layout/StudentLayout";
 import AdminLayout from "./Layout/AdminLayout";
 import Home from "./pages/Home";
 import AdminHome from "./Admin/AdminHome";
+import HackathonParticipants from './Admin/HackathonParticipants';
+
 import AdminHackathon from "./Admin/AdminHackathon";
 import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile"; // Import the EditProfile component
@@ -45,6 +47,8 @@ const App = () => {
           <Route index element={<ProtectedRoutes element={<AdminHome />} />} />
           <Route path="create-edit-hackathon/:id?" element={<CreateEditHackathon />} />
           <Route path="profile" element={<ProtectedRoutes element={<Profile />} />} />
+          <Route path="hackathon/:id/participants" element={<HackathonParticipants />} />
+    
           <Route path="edit-profile" element={<ProtectedRoutes element={<EditProfile />} />} />
           <Route path="hackathon/:id" element={<ProtectedRoutes element={<AdminHackathon />} />} />
         </Route>

@@ -11,6 +11,8 @@ const Hackathon = () => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [newReply, setNewReply] = useState({});
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [gallery, setGallery] = useState([]);
   const { user: authUser } = useAuth();
 
   const fetchHackathon = async () => {
@@ -40,9 +42,38 @@ const Hackathon = () => {
     }
   };
 
+  const fetchGallery = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/hackathons/${id}/gallery`,
+        { withCredentials: true }
+      );
+      setGallery(response.data);
+    } catch (error) {
+      console.error("Error fetching gallery images:", error);
+    }
+  };
+
+  const checkRegistration = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/hackathons/${id}/isRegistered`,
+        {
+          params: { user_id: authUser.id },
+          withCredentials: true,
+        }
+      );
+      setIsRegistered(response.data.isRegistered);
+    } catch (error) {
+      console.error("Error checking registration:", error);
+    }
+  };
+
   useEffect(() => {
     fetchHackathon();
     fetchComments();
+    fetchGallery();
+    checkRegistration();
   }, [id]);
 
   const handleCommentChange = (e) => {
@@ -88,6 +119,19 @@ const Hackathon = () => {
     }
   };
 
+  const handleRegister = async () => {
+    try {
+      await axios.post(
+        `http://localhost:3001/hackathons/${id}/register`,
+        { user_id: authUser.id },
+        { withCredentials: true }
+      );
+      setIsRegistered(true);
+    } catch (error) {
+      console.error("Error registering for hackathon:", error);
+    }
+  };
+
   if (loading) {
     return <div className="text-white">Loading...</div>;
   }
@@ -116,7 +160,7 @@ const Hackathon = () => {
     <div className="container mx-auto flex flex-col md:flex-row gap-4 mt-24">
       {/* Left Container */}
       <div className="md:w-2/3  p-6 rounded-lg shadow-lg">
-        <div className="md:w-4/3 bg-gray-900 p-6 rounded-lg shadow-lg">
+        <div className="md:w-4/3 bg-gray-900 p-6 rounded-lg shadow">
           <img
             src={image_url}
             alt={name}
@@ -129,9 +173,35 @@ const Hackathon = () => {
             Organized by {organization}
           </h2>
           <p className="text-gray-300 mb-4">{description}</p>
-          <button className="mt-4 bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600">
-            Participate
-          </button>
+          {!isRegistered ? (
+            <button
+              onClick={handleRegister}
+              className="mt-4 bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600"
+            >
+              Participate
+            </button>
+          ) : (
+            <p className="mt-4 text-teal-500">You have already participated in this hackathon.</p>
+          )}
+        </div>
+        {/* Gallery Section */}
+        <div className="md:w-4/3 bg-gray-900 p-6 rounded-lg shadow-lg mt-8">
+          <h2
+            className="text-2xl font-semibold mb-4"
+            style={{ color: "#3cd7b8" }}
+          >
+            Gallery
+          </h2>
+          <div className="flex overflow-x-scroll space-x-4">
+            {gallery.map((image) => (
+              <img
+                key={image.id}
+                src={image.image_url}
+                alt="Hackathon"
+                className="w-64 h-64 object-cover rounded-lg"
+              />
+            ))}
+          </div>
         </div>
         {/* Comments Section */}
         <div className="md:w-4/3 bg-gray-900 p-6 rounded-lg shadow-lg mt-8">

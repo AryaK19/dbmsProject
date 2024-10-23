@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { FaUserCircle } from 'react-icons/fa'; // For the profile icon
-import { fetchHackathons } from '../service/api';
+import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../Auth/AuthContext';
 
 const AdminHome = () => {
   const [hackathons, setHackathons] = useState([]);
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   useEffect(() => {
     const getHackathons = async () => {
       try {
-        const data = await fetchHackathons(); // Call the Axios function
-        setHackathons(data); // Set the fetched data into state
+         const response = await axios.get(`http://localhost:3001/adminHackathons/${user.id}`)// Call the Axios function
+        setHackathons(response.data); // Set the fetched data into state
       } catch (err) {
         console.error('Error fetching hackathons:', err);
       }

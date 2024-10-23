@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../Auth/AuthContext';
 
 const Navbar = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [currentUser, setCurrentUser] = useState(user);
+
+  useEffect(() => {
+    setCurrentUser(user);
+  }, [user]);
 
   const goToHomePage = () => {
     navigate('/student');
@@ -24,10 +29,15 @@ const Navbar = () => {
         </div>
       </div>
       <div className="flex items-center space-x-2 cursor-pointer" onClick={goToProfilePage}>
-        {user ? (
+        {currentUser ? (
           <>
-            <span className="text-gray-300 text-l">{user.name}</span>
-            <img src={user.profile_image} alt="Profile" className="w-10 h-10 bg-gray-400 rounded-full" />
+            <span className="text-gray-300 text-l">{currentUser.name}</span>
+            <img
+              src={currentUser.profile_image || '/images/default-profile.png'}
+              alt="Profile"
+              className="w-10 h-10 bg-gray-400 rounded-full"
+              onError={(e) => { e.target.src = '/images/default-profile.png'; }}
+            />
           </>
         ) : (
           <span className="text-gray-300 text-l">Loading...</span>
